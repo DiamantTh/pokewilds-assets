@@ -4,13 +4,34 @@
 
 **DISCLAIMER:** this is currently in Alpha. Things are getting there, but still not fully complete. I am working hard to find and fix bugs; however, **expect to find bugs.** If you find a bug, please consider creating an issue here on github describing it (that would help me out a ton).
 
-## Download
+## Download Game / Spiel herunterladen
 
 **Windows 64-bit:** https://github.com/SheerSt/pokewilds/releases/latest/download/pokewilds-windows64.zip
 
 **Linux 64-bit:** https://github.com/SheerSt/pokewilds/releases/latest/download/pokewilds-linux64.zip
 
 **Mac, Linux 32-bit, Windows 32-bit:** https://github.com/SheerSt/pokewilds/releases/latest/download/pokewilds-otherplatforms.zip
+
+## Download Assets / Assets herunterladen
+
+**📦 Want just the game assets? / Nur die Spiel-Assets gewünscht?**
+
+This repository contains all game assets (sprites, animations, tiles, sounds, music) that can be downloaded as packaged archives:
+
+Dieses Repository enthält alle Spiel-Assets (Sprites, Animationen, Tiles, Sounds, Musik), die als gepackte Archive heruntergeladen werden können:
+
+**🎨 [Download Assets from Releases / Assets von Releases herunterladen](https://github.com/DiamantTh/pokewilds-assets/releases)**
+
+**📖 [Full Download Instructions / Vollständige Download-Anleitung](DOWNLOAD.md)**
+
+Available archives / Verfügbare Archive:
+- **Complete** (~540 MB) - All assets including music / Alle Assets inklusive Musik
+- **No Music** (~440 MB) - Assets without music folder / Assets ohne Musik-Ordner  
+- **Core Assets** (~440 MB) - Essential assets only / Nur essenzielle Assets
+
+**What's included:** 990 Pokémon, 368 attack animations, complete tile sets, UI elements, 24 player characters, sounds & music
+
+**Was enthalten ist:** 990 Pokémon, 368 Attacken-Animationen, vollständige Tile-Sets, UI-Elemente, 24 Spieler-Charaktere, Sounds & Musik
 
 ## How to Run
 

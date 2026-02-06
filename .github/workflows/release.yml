@@ -1,0 +1,115 @@
+name: Create Asset Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get version from tag
+        id: get_version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="latest"
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+      
+      - name: Create asset archive
+        run: |
+          # Create main assets archive (excluding git, github, and large binaries initially)
+          zip -r pokewilds-assets-${{ steps.get_version.outputs.version }}.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "*.md" \
+            -x ".gitignore"
+          
+          # Create complete archive with everything
+          zip -r pokewilds-assets-complete-${{ steps.get_version.outputs.version }}.zip . \
+            -x ".git/*" \
+            -x ".github/*"
+          
+          # Create assets-only archive (no music due to size)
+          zip -r pokewilds-assets-no-music-${{ steps.get_version.outputs.version }}.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "music/*" \
+            -x "*.md" \
+            -x ".gitignore"
+          
+          # Display archive sizes
+          ls -lh *.zip
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            pokewilds-assets-*.zip
+          body: |
+            # PokeWilds Assets ${{ steps.get_version.outputs.version }}
+            
+            ## Downloads / Downloads
+            
+            **Complete Archive / Vollständiges Archiv:**
+            - `pokewilds-assets-complete-${{ steps.get_version.outputs.version }}.zip` - All assets including documentation (~540 MB)
+            - `pokewilds-assets-complete-${{ steps.get_version.outputs.version }}.zip` - Alle Assets inklusive Dokumentation (~540 MB)
+            
+            **Assets without Music / Assets ohne Musik:**
+            - `pokewilds-assets-no-music-${{ steps.get_version.outputs.version }}.zip` - All assets except music folder (~440 MB)
+            - `pokewilds-assets-no-music-${{ steps.get_version.outputs.version }}.zip` - Alle Assets außer Musik-Ordner (~440 MB)
+            
+            **Main Assets Only / Nur Haupt-Assets:**
+            - `pokewilds-assets-${{ steps.get_version.outputs.version }}.zip` - Core assets without docs and music (~440 MB)
+            - `pokewilds-assets-${{ steps.get_version.outputs.version }}.zip` - Kern-Assets ohne Dokumentation und Musik (~440 MB)
+            
+            ## Contents / Inhalt
+            
+            This release contains all game assets for PokeWilds including:
+            - 990 Pokémon sprites and animations
+            - 368 attack/move animations  
+            - Tile sets for various biomes
+            - UI elements and menus
+            - Sound effects
+            - Music tracks (in complete archive only)
+            - Player character sprites
+            - Battle backgrounds
+            - Internationalization files
+            
+            Diese Version enthält alle Spiel-Assets für PokeWilds:
+            - 990 Pokémon-Sprites und Animationen
+            - 368 Attacken-/Move-Animationen
+            - Tile-Sets für verschiedene Biome
+            - UI-Elemente und Menüs
+            - Sound-Effekte
+            - Musik-Tracks (nur im vollständigen Archiv)
+            - Spieler-Charakter-Sprites
+            - Kampf-Hintergründe
+            - Internationalisierungsdateien
+            
+            ## Usage / Verwendung
+            
+            **English:**
+            1. Download the archive you need
+            2. Extract the ZIP file
+            3. Use the assets in your project (check LICENSE for terms)
+            
+            **Deutsch:**
+            1. Lade das gewünschte Archiv herunter
+            2. Entpacke die ZIP-Datei
+            3. Verwende die Assets in deinem Projekt (prüfe die LICENSE für Bedingungen)
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
